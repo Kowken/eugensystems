@@ -16,7 +16,7 @@ class CompteurEffet;
 class Capacité;
 class Combat;
 
-//================================= CHEVALIER ==============================================================
+//================================= PERSONNAGE ==============================================================
 
 /*Caractéristiques du chevalier :
 - Il dispose de 20 points de vie et d'un bouclier de 50 points.
@@ -51,7 +51,7 @@ class Personnage
     public:
 
         //================================= CONSTRUCTEURS ET DESTRUCTEURS ==============================================================
-        Personnage(std::string Nom, int PVMax, int AttaqueBasique, int PVBouclier, Capacité* Capacité);
+        Personnage(std::string Nom, int PVMax, int AttaqueBasique, int PVBouclier);
         ~Personnage();
 
         //================================= GETTERS ==============================================================
@@ -84,8 +84,9 @@ class Personnage
         void afficherStatut();
         void attaquer(Personnage* Défenseur);
         void calculDéfense(Personnage* Attaquant);
-        void utiliserCapacité();
+        void utiliserCapacité(Personnage* Attaquant);
         void problemeStatut();
+        int attaqueTotale();
 };
 
 //================================= COMPTEUR EFFET ==============================================================
@@ -126,38 +127,38 @@ class CompteurEffet
 
 class Capacité
 {
-    private:
+    protected:
 
     std::string m_Nom;
     int m_Cooldown=0;
-    std::string m_nomUtilisateur;
+    Personnage* m_Utilisateur;
 
     public:
 
     //================================= CONSTRUCTEURS ET DESTRUCTEURS ==============================================================
 
-    Capacité(std::string nomUtilisateur);
+    Capacité(Personnage* Utilisateur);
     virtual ~Capacité();
 
     //================================= GETTERS ==============================================================
 
     std::string getNom();
     int getCooldown();
-    std::string getNomUtilisateur();
+    Personnage* getUtilisateur();
 
     //================================= SETTERS ===============================================================
 
     void setNom(std::string deltaNom);
     void setCooldown(int deltaCooldown);
-    void setNomUtilisateur(std::string deltaNomUtilisateur);
+    void setUtilisateur(Personnage* deltaUtilisateur);
 
     //================================= AUTRES ===============================================================
 
     virtual void description();
-    virtual void effetImmédiat();
-    virtual void réinitialisationEffet();
-    virtual void effetParTour();
-    virtual void processusRéinitialsationEffet();
+    virtual void effetImmédiat(Personnage* Attaquant);
+    virtual void réinitialisationEffet(Personnage* Attaquant);
+    virtual void effetParTour(Personnage* Attaquant);
+    virtual void processusRéinitialsationEffet(Personnage* Attaquant);
 
 };
 
@@ -195,8 +196,8 @@ class Combat
     //================================= SETTERS ===============================================================
 
     void setNombreDeTours(int DeltaNombreDeTours);
-    void setPoolPersonnageJoueur1(std::vector<Personnage*>* DeltaPoolPersonnageJoueur1);
-    void setPoolPersonnageJoueur2(std::vector<Personnage*>* DeltaPoolPersonnageJoueur2);
+    void setPoolPersonnageJoueur1();
+    void setPoolPersonnageJoueur2();
     void setJoueur1(Personnage* DeltaJoueur1);
     void setJoueur2(Personnage* DeltaJoueur2);
     void setTourJoueur1Fini(bool DeltaTourJoueur1Fini);
@@ -208,7 +209,7 @@ class Combat
     void afficherCombat(Personnage* Personnage1, Personnage* Personnage2);
     void selectionPersonnages();
     void utiliserCapacité(Personnage* Attaquant, Personnage* Défenseur);
-    //void mortDePersonnage();
+    void mortDePersonnage();
     void finDuCombat();
     void Attaque(Personnage* Attaquant, Personnage* Défenseur);
     void Combattre();

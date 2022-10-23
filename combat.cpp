@@ -100,7 +100,7 @@ void Combat::setJoueur1Encours(bool DeltaJoueur1Encours)
 
 void Combat::afficherCombat(Personnage* Personnage1, Personnage* Personnage2)
 {
-
+    
 }
 
 void Combat::selectionPersonnages()

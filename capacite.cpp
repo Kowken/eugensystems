@@ -2,8 +2,10 @@
 
 //================================= CONSTRUCTEURS ET DESTRUCTEURS ==============================================================
 
-Capacité::Capacité(std::string nomUtilisateur)
-:m_nomUtilisateur(nomUtilisateur)
+
+
+Capacité::Capacité(Personnage* Utilisateur)
+:m_Utilisateur(Utilisateur)
 {
 
 }
@@ -25,9 +27,9 @@ int Capacité::getCooldown()
  return m_Cooldown;
 }
 
-std::string Capacité::getNomUtilisateur()
+Personnage* Capacité::getUtilisateur()
 {
-    return m_nomUtilisateur;
+    return m_Utilisateur;
 }
 
 //================================= SETTERS ===============================================================
@@ -42,9 +44,9 @@ void Capacité::setCooldown(int deltaCooldown)
     m_Cooldown+=deltaCooldown;
 }
 
-void Capacité::setNomUtilisateur(std::string deltaNomUtilisateur)
+void Capacité::setUtilisateur(Personnage* deltaUtilisateur)
 {
-    m_nomUtilisateur=deltaNomUtilisateur;
+    m_Utilisateur=deltaUtilisateur;
 }
 
 //================================= AUTRES ===============================================================
@@ -54,22 +56,22 @@ void Capacité::description()
 
 }
 
-void Capacité::effetImmédiat()
+void Capacité::effetImmédiat(Personnage* Attaquant)
 {
 
 }
 
-void Capacité::réinitialisationEffet()
+void Capacité::réinitialisationEffet(Personnage* Attaquant)
 {
 
 }
 
-void Capacité::effetParTour()
+void Capacité::effetParTour(Personnage* Attaquant)
 {
 
 }
 
-void Capacité::processusRéinitialsationEffet()
+void Capacité::processusRéinitialsationEffet(Personnage* Attaquant)
 {
 
 }
