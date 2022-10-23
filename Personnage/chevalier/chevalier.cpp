@@ -2,10 +2,10 @@
 
 //================================= CONSTRUCTEURS ET DESTRUCTEURS ==============================================================
 
-Charge::Charge(Personnage* Utilisateur, std::string Nom)
+Charge::Charge(Personnage* Utilisateur)
 :Capacité(Utilisateur)
 {
-    setNom(Nom);
+    setNom("Charge");
 }
 
 Charge::~Charge()
@@ -28,7 +28,14 @@ void Charge::effetImmédiat(Personnage* Attaquant)
     int ChanceRéussite=rand()%10+1;
     if(ChanceRéussite<=6)
     {
-
+        getUtilisateur()->setCoeffAttaque(2);
+        for(int i; i<getUtilisateur()->getListeBonus()->size();i++)
+        {
+            if(getUtilisateur()->getListeBonus()->at(i)->getNomEffet()==getNom())
+            {
+                getUtilisateur()->getListeBonus()->at(i)->getNombreTours().push_back(1);
+            }
+        }
     }
     else
     {
@@ -40,12 +47,13 @@ void Charge::effetImmédiat(Personnage* Attaquant)
 
 void Charge::réinitialisationEffet(Personnage* Attaquant)
 {
-    for(int i; i<Attaquant->getListeMalus()->size();i++)
+    for(int i; i<getUtilisateur()->getListeBonus()->size();i++)
     {
-        if(!Attaquant->getListeMalus()->at(i)->getNombreTours().empty() && Attaquant->getListeMalus()->at(i)->getNomEffet()==getNom() && Attaquant->getListeMalus()->at(i)->getNombreTours()[0]<=0) //on vérifie que la liste n'est pas vide en premier pour éviter les erreurs car la vérification est séquentielle
+        if(!getUtilisateur()->getListeBonus()->at(i)->getNombreTours().empty() && getUtilisateur()->getListeBonus()->at(i)->getNomEffet()==getNom() && getUtilisateur()->getListeBonus()->at(i)->getNombreTours()[0]<=0)
         {
-            Attaquant->setStun(false);
-             //on efface le marqueur indiquant que l'attaquant est actuellement sous paralysie
+            getUtilisateur()->setCoeffAttaque(0.5);
+            getUtilisateur()->getListeBonus()->at(i)->getNombreTours().erase(getUtilisateur()->getListeBonus()->at(i)->getNombreTours().begin());
+            std::cout<<getUtilisateur()->getNom()<<" retrouve sa force initiale !"<<std::endl;
         }
     }
 }
@@ -64,5 +72,8 @@ void Charge::processusRéinitialsationEffet(Personnage* Attaquant)
 
 Personnage* créerChevalier(std::string Nom)
 {
-
+    Personnage* o_Chevalier= new Personnage(Nom, 20, 5, 50);
+    Charge* o_Charge= new Charge(o_Chevalier);
+    o_Chevalier->setCapacité(o_Charge);
+    return o_Chevalier;
 }

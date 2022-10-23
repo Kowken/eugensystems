@@ -2,10 +2,10 @@
 
 //================================= CONSTRUCTEURS ET DESTRUCTEURS ==============================================================
 
-Stun::Stun(Personnage* Utilisateur, std::string Nom)
+Stun::Stun(Personnage* Utilisateur)
 :Capacité(Utilisateur)
 {
-    setNom(Nom);
+    setNom("Stun");
 }
 
 Stun::~Stun()
@@ -72,7 +72,10 @@ void Stun::processusRéinitialsationEffet(Personnage* Attaquant)
 
 //================================= INITIALISATEUR ===============================================================
 
-/*Personnage* créerOrc(std::string Nom)
+Personnage* créerOrc(std::string Nom)
 {
-    
-}*/
+    Personnage* o_Orc= new Personnage(Nom, 20, 5, 50);
+    Stun* o_Stun= new Stun(o_Orc);
+    o_Orc->setCapacité(o_Stun);
+    return o_Orc;
+}

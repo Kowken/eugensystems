@@ -87,12 +87,12 @@ void Personnage::setPVMax(int deltaPVMax)
     m_PVMax+=deltaPVMax;
 }
 
-void Personnage::setAttaqueBasique(int deltaAttaqueBasique)
+void Personnage::setAttaqueBasique(double deltaAttaqueBasique)
 {
     m_AttaqueBasique+=deltaAttaqueBasique;
 }
 
-void Personnage::setCoeffAttaque(int deltaCoeffAttaque)
+void Personnage::setCoeffAttaque(double deltaCoeffAttaque)
 {
     m_CoeffAttaque*=deltaCoeffAttaque;
 }

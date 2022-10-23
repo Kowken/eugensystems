@@ -45,5 +45,7 @@ propositions et de les implémenter.*/
 int main()
 {
     std::cout<<"Yes bébé allez ça marche"<<std::endl;
+    Combat o_Combat;
+    o_Combat.Combattre();
     return 0;
 }

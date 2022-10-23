@@ -71,8 +71,8 @@ class Personnage
         void setNom(std::string deltaNom);
         void setPV(int deltaPV);
         void setPVMax(int deltaPVMax);
-        void setAttaqueBasique(int deltaAttaqueBasique);
-        void setCoeffAttaque(int deltaCoeffAttaque);
+        void setAttaqueBasique(double deltaAttaqueBasique);
+        void setCoeffAttaque(double deltaCoeffAttaque);
         int setPVBouclier(int detlaPVBouclier);
         void setCapacité(Capacité* deltaCapacité);
         void setVivant(bool deltaVivant);
@@ -174,6 +174,8 @@ class Combat
     bool m_TourJoueur1Fini=false;
     bool m_TourJoueur2Fini=false;
     bool m_Joueur1Encours = true; //sert à savoir qui joue en ce moment
+    bool m_VictoireJoueur1=false;
+    bool m_VictoireJoueur2=false;
 
     public:
 
@@ -192,6 +194,8 @@ class Combat
     bool getTourJoueur1Fini();
     bool getTourJoueur2Fini();
     bool getJoueur1Encours();
+    bool getVictoireJoueur1();
+    bool getVictoireJoueur2();
 
     //================================= SETTERS ===============================================================
 
@@ -203,16 +207,19 @@ class Combat
     void setTourJoueur1Fini(bool DeltaTourJoueur1Fini);
     void setTourJoueur2Fini(bool DeltaTourJoueur2Fini);
     void setJoueur1Encours(bool DeltaJoueur1Encours);
+    void setVictoireJoueur1(bool DeltaVictoireJoueur1);
+    void setVictoireJoueur2(bool DeltaVictoireJoueur2);
 
     //================================= AUTRES ===============================================================
 
     void afficherCombat(Personnage* Personnage1, Personnage* Personnage2);
     void selectionPersonnages();
     void utiliserCapacité(Personnage* Attaquant, Personnage* Défenseur);
-    void mortDePersonnage();
-    void finDuCombat();
+    bool mortDePersonnage(Personnage* Personnage1, Personnage* Personnage2);
+    bool finDuCombat();
     void Attaque(Personnage* Attaquant, Personnage* Défenseur);
     void Combattre();
+    int MenuActions(Personnage* Attaquant, Personnage* Défenseur);
 };
 
 #endif // HEAD_H_INCLUDED

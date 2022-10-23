@@ -10,7 +10,7 @@ class Charge: public Capacité
 
     //================================= CONSTRUCTEURS ET DESTRUCTEURS ==============================================================
 
-    Charge(Personnage* Utilisateur, std::string Nom);
+    Charge(Personnage* Utilisateur);
     ~Charge();
 
     //================================= AUTRES ===============================================================

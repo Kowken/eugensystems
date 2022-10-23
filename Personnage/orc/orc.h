@@ -10,7 +10,7 @@ class Stun: public Capacité
 
     //================================= CONSTRUCTEURS ET DESTRUCTEURS ==============================================================
 
-    Stun(Personnage* Utilisateur, std::string Nom);
+    Stun(Personnage* Utilisateur);
     ~Stun();
 
     //================================= AUTRES ===============================================================
