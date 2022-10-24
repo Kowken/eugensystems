@@ -118,9 +118,26 @@ void Combat::setVictoireJoueur2(bool DeltaVictoireJoueur2)
 
 //================================= AUTRES ===============================================================
 
-void Combat::afficherCombat(Personnage* Personnage1, Personnage* Personnage2)
+void Combat::afficherCombat(Personnage* Attaquant, Personnage* Défenseur)
 {
-    
+    std::cout<<"Attaquant:"<<std::endl;
+    std::cout<<"Nom: "<<Attaquant->getNom()<<std::endl;
+    std::cout<<"Points de vie: "<<Attaquant->getPV()<<"/"<<Attaquant->getPVMax()<<" | Points de défense: "<<Attaquant->getPVBouclier()<<std::endl;
+    std::cout<<"Capacité: "<<Attaquant->getCapacité()->getNom()<<" | Temps de recharge restant: "<<Attaquant->getCapacité()->getCooldown()<<" tour(s)"<<std::endl;
+    std::cout<<"Description:"<<std::endl;
+    Attaquant->getCapacité()->description();
+    std::cout<<std::endl;
+    std::cout<<"Statut:"<<std::endl;
+    std::cout<<"Paralysie: "<<Attaquant->getStun()<<std::endl;
+
+    std::cout<<std::endl;
+
+    std::cout<<"Défenseur:"<<std::endl;
+    std::cout<<"Nom: "<<Défenseur->getNom()<<std::endl;
+    std::cout<<"Points de vie: "<<Défenseur->getPV()<<"/"<<Défenseur->getPVMax()<<" | Points de défense: "<<Défenseur->getPVBouclier()<<std::endl;
+    std::cout<<"Statut:"<<std::endl;
+    std::cout<<"Paralysie: "<<Défenseur->getStun()<<std::endl;
+
 }
 
 void Combat::selectionPersonnages()
@@ -138,10 +155,14 @@ bool Combat::mortDePersonnage(Personnage* Personnage1, Personnage* Personnage2)
 {
     if(Personnage1->getPV()<=0)
     {
+        std::cout<<"Le joueur 1 ne peut plus se battre !"<<std::endl;
+        std::cout<<"La victoire revient au joueur 2 !"<<std::endl;
         setVictoireJoueur2(true);
     }
     if(Personnage2->getPV()<=0)
     {
+        std::cout<<"Le joueur 2 ne peut plus se battre !"<<std::endl;
+        std::cout<<"La victoire revient au joueur 1 !"<<std::endl;
         setVictoireJoueur1(true);
     }
     if(getVictoireJoueur1()||getVictoireJoueur2()) //implémentation d'un futur cas d'égalité
@@ -156,6 +177,7 @@ bool Combat::finDuCombat()
 {
     if(mortDePersonnage) //fonction redondante pour le moment mais possible implémentation de conditions supplémentaires de victoire
     {
+        std::cout<<"C'est la fin du combat !"<<std::endl;
         return true;
     }
     return false;
@@ -206,11 +228,7 @@ void Combat::Combattre()
                 setTourJoueur2Fini(false);
             }
 
-            do
-            {
-                
-            }
-            while (MenuActions(Attaquant, Défenseur)!=1||MenuActions(Attaquant, Défenseur)!=3); //cas d'attaque (1) ou d'abandon (3)
+            while (MenuActions(Attaquant, Défenseur)!=1 || MenuActions(Attaquant, Défenseur)!=3); //activation du menu jusqu'au cas d'attaque (1) ou d'abandon (3)
 
             if(getJoueur1Encours()) //changement de joueur est mise à jour de l'état de chacun
             {
@@ -224,12 +242,68 @@ void Combat::Combattre()
             }
         } 
         while ((!getTourJoueur1Fini()||!getTourJoueur2Fini()) || !mortDePersonnage(Joueur1, Joueur2)); //
+        PassageTourSuivant(Joueur1,Joueur2);
     } 
     while (!finDuCombat());
-    
 }
 
 int Combat::MenuActions(Personnage* Attaquant, Personnage* Défenseur)
 {
+    int ChoixAction=0;
 
+    afficherCombat(Attaquant,Défenseur);
+
+    std::cout<<"Choisissez l'action à effectuer: "<<std::endl;
+    std::cout<<"1. Attaquer"<<std::endl;
+    std::cout<<"2. Utiliser sa capacité"<<std::endl;
+    std::cout<<"3. Abandonner le combat"<<std::endl;
+    std::cout<<std::endl;
+
+    std::cin>>ChoixAction;
+    if(ChoixAction==1)
+    {
+        Attaquant->attaquer(Défenseur);
+    }
+    if(ChoixAction==2)
+    {
+        Attaquant->utiliserCapacité(Défenseur);
+    }
+    if(ChoixAction==3)
+    {
+        AbandonCombat(Attaquant);
+    }
+    return ChoixAction;
+}
+
+void Combat::AbandonCombat(Personnage* Attaquant)
+{
+    Attaquant->setPV(-Attaquant->getPV());
+    std::cout<<Attaquant->getNom()<<" déclare forfait !"<<std::endl;
+}
+
+void Combat::PassageTourSuivant(Personnage* Joueur1, Personnage* Joueur2)
+{
+    Joueur1->getCapacité()->setCooldown(-1);
+    Joueur2->getCapacité()->setCooldown(-1);
+
+    for(int i; i<Joueur1->getListeBonus()->size();i++)
+    {
+        Joueur1->getListeBonus()->at(i)->crémentationNombreTour(-1);
+    }
+    for(int i; i<Joueur1->getListeMalus()->size();i++)
+    {
+        Joueur1->getListeMalus()->at(i)->crémentationNombreTour(-1);
+    }
+
+    for(int i; i<Joueur2->getListeBonus()->size();i++)
+    {
+        Joueur2->getListeBonus()->at(i)->crémentationNombreTour(-1);
+    }
+    for(int i; i<Joueur2->getListeMalus()->size();i++)
+    {
+        Joueur2->getListeMalus()->at(i)->crémentationNombreTour(-1);
+    }
+
+    Joueur1->getCapacité()->réinitialisationEffet(Joueur2);
+    Joueur2->getCapacité()->réinitialisationEffet(Joueur1);
 }

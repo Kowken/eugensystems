@@ -25,12 +25,15 @@ void Stun::description()
 void Stun::effetImmédiat(Personnage* Attaquant)
 {
     std::cout<<getUtilisateur()->getNom()<<" utilise sa capacité "<<getNom()<<" !"<<std::endl;
+
     srand(time(NULL));
     int ChanceRéussite=rand()%10+1;
+
     if(ChanceRéussite<=6 && !Attaquant->getStun()) //on donne 60 pourcents de chance à la capacité de réussir et on impose comme condition que l'attaquant ne soit pas déjà paralysé
     {
         Attaquant->setStun(true);
         std::cout<<Attaquant->getNom()<<" est désormais paralysé !"<<std::endl;
+
         for(int i; i<Attaquant->getListeMalus()->size();i++)
         {
             if(Attaquant->getListeMalus()->at(i)->getNomEffet()==getNom())
@@ -43,7 +46,9 @@ void Stun::effetImmédiat(Personnage* Attaquant)
     {
         std::cout<<"Mais la capacité échoue !"<<std::endl;
     }
+
     setCooldown(3);
+    
     std::cout<<getUtilisateur()->getNom()<<" doit désormais attendre "<<getCooldown()<<" tour(s) avant de pouvoir réutiliser cette capacité."<<std::endl;
 }
 

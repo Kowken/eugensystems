@@ -24,11 +24,14 @@ void Charge::description()
 void Charge::effetImmédiat(Personnage* Attaquant)
 {
     std::cout<<getUtilisateur()->getNom()<<" utilise sa capacité "<<getNom()<<" !"<<std::endl;
+
     srand(time(NULL));
     int ChanceRéussite=rand()%10+1;
+
     if(ChanceRéussite<=6)
     {
         getUtilisateur()->setCoeffAttaque(2);
+        
         for(int i; i<getUtilisateur()->getListeBonus()->size();i++)
         {
             if(getUtilisateur()->getListeBonus()->at(i)->getNomEffet()==getNom())
@@ -41,7 +44,9 @@ void Charge::effetImmédiat(Personnage* Attaquant)
     {
         std::cout<<"Mais la capacité échoue !"<<std::endl;
     }
+
     setCooldown(3);
+
     std::cout<<getUtilisateur()->getNom()<<" doit désormais attendre "<<getCooldown()<<" tour(s) avant de pouvoir réutiliser cette capacité."<<std::endl;
 }
 

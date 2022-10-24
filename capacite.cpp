@@ -42,6 +42,7 @@ void Capacité::setNom(std::string deltaNom)
 void Capacité::setCooldown(int deltaCooldown)
 {
     m_Cooldown+=deltaCooldown;
+    m_Cooldown=std::max(m_Cooldown,0);
 }
 
 void Capacité::setUtilisateur(Personnage* deltaUtilisateur)

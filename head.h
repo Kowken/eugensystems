@@ -220,6 +220,8 @@ class Combat
     void Attaque(Personnage* Attaquant, Personnage* Défenseur);
     void Combattre();
     int MenuActions(Personnage* Attaquant, Personnage* Défenseur);
+    void AbandonCombat(Personnage* Attaquant);
+    void PassageTourSuivant(Personnage* Joueur1, Personnage* Joueur2);
 };
 
 #endif // HEAD_H_INCLUDED
