@@ -2,9 +2,12 @@
 
 //================================= CONSTRUCTEURS ET DESTRUCTEURS ==============================================================
 Personnage::Personnage(std::string Nom, int PVMax, int AttaqueBasique, int PVBouclier)
-:m_Nom(Nom), m_PVMax(PVMax), m_AttaqueBasique(AttaqueBasique), m_PVBouclier(PVBouclier) //la capacité sera déclarée après car elle doit trouver son parent
+:m_Nom(Nom), m_PVMax(PVMax), m_PV(PVMax), m_AttaqueBasique(AttaqueBasique), m_PVBouclier(PVBouclier) //la capacité sera déclarée après car elle doit trouver son parent
 {
-
+    CompteurEffet* Stun = new CompteurEffet("Stun");
+    CompteurEffet* Charge = new CompteurEffet("Charge");
+    m_ListeBonus.push_back(Charge);
+    m_ListeMalus.push_back(Stun);
 }
 
 Personnage::~Personnage()
@@ -131,48 +134,53 @@ void Personnage::setStun(bool deltaStun)
 //================================= AUTRES ==============================================================
 void Personnage::afficherStatut()
 {
-    std::cout<<"Nom: "<<getNom()<<std::endl;
-    std::cout<<"PV: "<<getPVMax()<<" / "<<getPV()<<std::endl;
-    std::cout<<"Bouclier: "<<getPVBouclier()<<std::endl;
-    std::cout<<"Capacité: "<<getCapacité()->getNom()<<" Temps de chargement restant: "<<getCapacité()->getCooldown()<<std::endl;
+    std::cout<<"Nom: "<<m_Nom<<std::endl;
+    std::cout<<"Points de vie: "<<m_PV<<"/"<<getPVMax()<<" | Points de défense: "<<m_PVBouclier<<std::endl;
+    std::cout<<"Capacité: "<<m_Capacité->getNom()<<" | Temps de recharge restant: "<<m_Capacité->getCooldown()<<" tour(s)"<<std::endl;
+    std::cout<<"Description:"<<std::endl;
+    m_Capacité->description();
+    std::cout<<std::endl;
+    std::cout<<"Statut:"<<std::endl;
+    std::cout<<"Paralysie: "<<getStun()<<std::endl;
+
 }
 
 void Personnage::attaquer(Personnage* Défenseur)
 {
-    if(!getStun)
+    if(!m_Stun)
     {
-        std::cout<<getNom()<<" attaque "<<Défenseur->getNom()<<" !"<<std::endl;
+        std::cout<<m_Nom<<" attaque "<<Défenseur->getNom()<<" !"<<std::endl;
         Défenseur->calculDéfense(this);
     }
     else
     {
-        std::cout<<getNom()<<" est paralysé: il ne peut pas attaquer !"<<std::endl;
+        std::cout<<m_Nom<<" est paralysé: il ne peut pas attaquer !"<<std::endl;
     }
 }
 
 void Personnage::calculDéfense(Personnage* Attaquant)
 {
-    setPV(setPVBouclier(Attaquant->attaqueTotale()));
-    std::cout<<Attaquant->getNom()<<"inflige "<<Attaquant->attaqueTotale()<<" dégâts à"<<getNom()<<" !"<<std::endl;
+    setPV(-setPVBouclier(-Attaquant->attaqueTotale()));
+    std::cout<<Attaquant->getNom()<<" inflige "<<Attaquant->attaqueTotale()<<" dégâts à "<<m_Nom<<" !"<<std::endl;
 }
 
 void Personnage::utiliserCapacité(Personnage* Attaquant)
 {
-    if(!getStun())
+    if(!m_Stun)
     {
-        if(getCapacité()->getCooldown()<=0)
+        if(m_Capacité->getCooldown()<=0)
         {
-            std::cout<<getNom()<<" utilise sa capacité "<<getCapacité()->getNom()<<" !"<<std::endl;
-            getCapacité()->effetImmédiat(Attaquant);
+            std::cout<<m_Nom<<" utilise sa capacité "<<m_Capacité->getNom()<<" !"<<std::endl;
+            m_Capacité->effetImmédiat(Attaquant);
         }
         else
         {
-            std::cout<<"La capacité de "<<getNom()<<" n'a pas fini de se recharger !"<<std::endl;
+            std::cout<<"La capacité de "<<m_Nom<<" n'a pas fini de se recharger !"<<std::endl;
         }
     }
     else
     {
-        std::cout<<getNom()<<"est paralysé: il ne peut pas utiliser sa capacité !"<<std::endl;
+        std::cout<<m_Nom<<"est paralysé: il ne peut pas utiliser sa capacité !"<<std::endl;
     }
 }
 
@@ -183,5 +191,5 @@ void Personnage::problemeStatut()
 
 int Personnage::attaqueTotale()
 {
-    return getAttaqueBasique()*getCoeffAttaque();
+    return m_AttaqueBasique*m_CoeffAttaque;
 }

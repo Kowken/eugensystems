@@ -96,21 +96,21 @@ class CompteurEffet
     private:
 
     std::string m_NomEffet;
-    std::vector<int> m_NombreTours={};
-    std::vector<int> m_NombreFois={};
+    std::vector<int> m_NombreTours;
+    std::vector<int> m_NombreFois;
 
     public:
 
     //================================= CONSTRUCTEURS ET DESTRUCTEURS ==============================================================
 
-    CompteurEffet();
+    CompteurEffet(std::string Nom);
     ~CompteurEffet();
 
     //================================= GETTERS ==============================================================
 
     std::string getNomEffet();
-    std::vector<int> getNombreTours();
-    std::vector<int> getNombreFois();
+    std::vector<int>* getNombreTours();
+    std::vector<int>* getNombreFois();
 
     //================================= SETTERS ===============================================================
 
@@ -167,8 +167,8 @@ class Combat
     private:
 
     int m_NombreDeTours=0;
-    std::vector<Personnage*>* m_PoolPersonnageJoueur1;
-    std::vector<Personnage*>* m_PoolPersonnageJoueur2;
+    std::vector<Personnage*> m_PoolPersonnageJoueur1;
+    std::vector<Personnage*> m_PoolPersonnageJoueur2;
     Personnage* m_Joueur1;
     Personnage* m_Joueur2;
     bool m_TourJoueur1Fini=false;
@@ -212,16 +212,16 @@ class Combat
 
     //================================= AUTRES ===============================================================
 
-    void afficherCombat(Personnage* Personnage1, Personnage* Personnage2);
+    void afficherCombat(Personnage* Attaquant, Personnage* Défenseur);
     void selectionPersonnages();
     void utiliserCapacité(Personnage* Attaquant, Personnage* Défenseur);
-    bool mortDePersonnage(Personnage* Personnage1, Personnage* Personnage2);
+    bool mortDePersonnage();
     bool finDuCombat();
     void Attaque(Personnage* Attaquant, Personnage* Défenseur);
     void Combattre();
-    int MenuActions(Personnage* Attaquant, Personnage* Défenseur);
+    void MenuActions(Personnage* Attaquant, Personnage* Défenseur);
     void AbandonCombat(Personnage* Attaquant);
-    void PassageTourSuivant(Personnage* Joueur1, Personnage* Joueur2);
+    void PassageTourSuivant();
 };
 
 #endif // HEAD_H_INCLUDED

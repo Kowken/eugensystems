@@ -40,12 +40,11 @@ propositions et de les implémenter.*/
 #include <string.h>
 #include <fstream>
 #include <vector>
-#include "head.h"
+#include "setup.h"
 
 int main()
 {
     std::cout<<"Yes bébé allez ça marche"<<std::endl;
-    Combat o_Combat;
-    o_Combat.Combattre();
+    menu();
     return 0;
 }

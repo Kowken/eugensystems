@@ -2,7 +2,8 @@
 
 //================================= CONSTRUCTEURS ET DESTRUCTEURS ==============================================================
 
-CompteurEffet::CompteurEffet()
+CompteurEffet::CompteurEffet(std::string Nom)
+:m_NomEffet(Nom)
 {
 
 }
@@ -19,14 +20,14 @@ std::string CompteurEffet::getNomEffet()
     return m_NomEffet;
 }
 
-std::vector<int> CompteurEffet::getNombreTours()
+std::vector<int>* CompteurEffet::getNombreTours()
 {
-    return m_NombreTours;
+    return &m_NombreTours;
 }
 
-std::vector<int> CompteurEffet::getNombreFois()
+std::vector<int>* CompteurEffet::getNombreFois()
 {
- return m_NombreFois;
+ return &m_NombreFois;
 }
 
 //================================= SETTERS ===============================================================

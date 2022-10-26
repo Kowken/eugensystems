@@ -23,20 +23,21 @@ void Charge::description()
 
 void Charge::effetImmédiat(Personnage* Attaquant)
 {
-    std::cout<<getUtilisateur()->getNom()<<" utilise sa capacité "<<getNom()<<" !"<<std::endl;
-
     srand(time(NULL));
     int ChanceRéussite=rand()%10+1;
 
-    if(ChanceRéussite<=6)
+    if(ChanceRéussite<=10) //rechanger avec 6
     {
-        getUtilisateur()->setCoeffAttaque(2);
+        m_Utilisateur->setCoeffAttaque(2);
         
-        for(int i; i<getUtilisateur()->getListeBonus()->size();i++)
+        for(int i=0; i<m_Utilisateur->getListeBonus()->size();i++)
         {
-            if(getUtilisateur()->getListeBonus()->at(i)->getNomEffet()==getNom())
+            //std::cout<<"wsh"<<std::endl;
+            if(m_Utilisateur->getListeBonus()->at(i)->getNomEffet()==m_Nom)
             {
-                getUtilisateur()->getListeBonus()->at(i)->getNombreTours().push_back(1);
+                //std::cout<<"wsh2"<<std::endl;
+                m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->push_back(1);
+                //std::cout<<m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->at(0)<<std::endl; // test
             }
         }
     }
@@ -47,18 +48,34 @@ void Charge::effetImmédiat(Personnage* Attaquant)
 
     setCooldown(3);
 
-    std::cout<<getUtilisateur()->getNom()<<" doit désormais attendre "<<getCooldown()<<" tour(s) avant de pouvoir réutiliser cette capacité."<<std::endl;
+    std::cout<<m_Utilisateur->getNom()<<" doit désormais attendre "<<m_Cooldown<<" tour(s) avant de pouvoir réutiliser cette capacité."<<std::endl;
 }
 
 void Charge::réinitialisationEffet(Personnage* Attaquant)
 {
-    for(int i; i<getUtilisateur()->getListeBonus()->size();i++)
+    //std::cout<<"Nom: "<<m_Utilisateur->getNom()<<std::endl; //test
+    //std::cout<<"Taille effet: "<<m_Utilisateur->getListeBonus()->size()<<std::endl; //test
+    for(int i=0; i<m_Utilisateur->getListeBonus()->size();i++)
     {
-        if(!getUtilisateur()->getListeBonus()->at(i)->getNombreTours().empty() && getUtilisateur()->getListeBonus()->at(i)->getNomEffet()==getNom() && getUtilisateur()->getListeBonus()->at(i)->getNombreTours()[0]<=0)
+        //std::cout<<"Taille int: "<<m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->size()<<std::endl; //test
+        //std::cout<<"Nom effet: "<<m_Utilisateur->getListeBonus()->at(i)->getNomEffet()<<std::endl; //test
+        //std::cout<<"Nom capacité: "<<m_Nom<<std::endl; //test
+//        if(!m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->empty()) //test
+//        {
+//            std::cout<<"Comptage effet: "<<m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->at(0)<<std::endl; //test
+//        }
+//        else //test
+//        {
+//            std::cout<<"vide !"<<std::endl; //test
+//        }
+//        std::cout<<std::endl; //test
+
+        if(!m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->empty() && m_Utilisateur->getListeBonus()->at(i)->getNomEffet()==m_Nom && m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->at(0)<=0)
         {
-            getUtilisateur()->setCoeffAttaque(0.5);
-            getUtilisateur()->getListeBonus()->at(i)->getNombreTours().erase(getUtilisateur()->getListeBonus()->at(i)->getNombreTours().begin());
-            std::cout<<getUtilisateur()->getNom()<<" retrouve sa force initiale !"<<std::endl;
+            //std::cout<<"1dfghjklmkojhifghviseuhrgoiusehrgoirzegioyzehrgioehzgoizergouerzbouehrzzer1"<<std::endl; //test
+            m_Utilisateur->setCoeffAttaque(0.5);
+            m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->erase(m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->begin());
+            std::cout<<m_Utilisateur->getNom()<<" retrouve sa force initiale !"<<std::endl;
         }
     }
 }
