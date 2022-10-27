@@ -28,7 +28,7 @@ void Stun::effetImmédiat(Personnage* Attaquant)
     srand(time(NULL));
     int ChanceRéussite=rand()%10+1;
 
-    if(ChanceRéussite<=2) //on donne 60 pourcents de chance à la capacité de réussir et on impose comme condition que l'attaquant ne soit pas déjà paralysé
+    if(ChanceRéussite<=10) //on donne 60 pourcents de chance à la capacité de réussir et on impose comme condition que l'attaquant ne soit pas déjà paralysé
     {
         Attaquant->setStun(true);
         std::cout<<Attaquant->getNom()<<" est désormais paralysé !"<<std::endl;

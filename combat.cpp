@@ -121,11 +121,13 @@ void Combat::setVictoireJoueur2(bool DeltaVictoireJoueur2)
 void Combat::afficherCombat(Personnage* Attaquant, Personnage* Défenseur)
 {
     std::cout<<"Attaquant:"<<std::endl;
+    std::cout<<std::endl;
     Attaquant->afficherStatut();
 
     std::cout<<std::endl;
 
     std::cout<<"Défenseur:"<<std::endl;
+    std::cout<<std::endl;
     Défenseur->afficherStatut();
 }
 
@@ -226,11 +228,13 @@ void Combat::Combattre()
     {
         setJoueur1Encours(true);
         std::cout<<"Le joueur 1 commence."<<std::endl;
+        std::cout<<std::endl;
     }
     else
     {
         setJoueur1Encours(false);
         std::cout<<"Le joueur 2 commence."<<std::endl;
+        std::cout<<std::endl;
     }
 
     do
@@ -251,6 +255,7 @@ void Combat::Combattre()
             }
 
             MenuActions(Attaquant, Défenseur);
+            PassageTourSuivant(Attaquant, Défenseur);
             //while (MenuActions(Attaquant, Défenseur)!=1 && MenuActions(Attaquant, Défenseur)!=3); //activation du menu jusqu'au cas d'attaque (1) ou d'abandon (3)
 
             if(m_Joueur1Encours) //changement de joueur est mise à jour de l'état de chacun
@@ -267,7 +272,7 @@ void Combat::Combattre()
             }
         } 
         while ((!m_TourJoueur1Fini||!m_TourJoueur2Fini) && !mortDePersonnage()); //1
-        PassageTourSuivant();
+        //PassageTourSuivant2();
     } 
     while (!finDuCombat());
 }
@@ -276,7 +281,7 @@ void Combat::MenuActions(Personnage* Attaquant, Personnage* Défenseur)
 {
     int ChoixAction=0;
 
-    //afficherCombat(Attaquant,Défenseur); //à remettre
+    afficherCombat(Attaquant,Défenseur); //à remettre
     std::cout<<std::endl;
     std::cout<<"Choisissez l'action à effectuer: "<<std::endl;
     std::cout<<"1. Attaquer"<<std::endl;
@@ -312,7 +317,7 @@ void Combat::AbandonCombat(Personnage* Attaquant)
     std::cout<<Attaquant->getNom()<<" déclare forfait !"<<std::endl;
 }
 
-void Combat::PassageTourSuivant()
+void Combat::PassageTourSuivant2()
 {
     //std::cout<<"Tour joueur 1: "<<m_TourJoueur1Fini<<std::endl; //test
     //std::cout<<"Tour joueur 2: "<<m_TourJoueur2Fini<<std::endl; //test
@@ -341,4 +346,23 @@ void Combat::PassageTourSuivant()
 
     m_Joueur1->getCapacité()->réinitialisationEffet(m_Joueur2);
     m_Joueur2->getCapacité()->réinitialisationEffet(m_Joueur1);
+}
+
+//implémenter tour suivant séparé pour les deux joueurs
+
+void Combat::PassageTourSuivant(Personnage* Attaquant, Personnage* Défenseur)
+{
+    Attaquant->getCapacité()->setCooldown(-1);
+
+    for(int i=0; i<Attaquant->getListeBonus()->size();i++)
+    {
+        Attaquant->getListeBonus()->at(i)->crémentationNombreTour(-1);
+    }
+    for(int i=0; i<Attaquant->getListeMalus()->size();i++)
+    {
+        Attaquant->getListeMalus()->at(i)->crémentationNombreTour(-1);
+    }
+
+    Attaquant->getCapacité()->réinitialisationEffet(Défenseur);
+    std::cout<<std::endl;
 }

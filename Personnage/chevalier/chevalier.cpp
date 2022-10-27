@@ -26,16 +26,16 @@ void Charge::effetImmédiat(Personnage* Attaquant)
     srand(time(NULL));
     int ChanceRéussite=rand()%10+1;
 
-    if(ChanceRéussite<=10) //rechanger avec 6
+    if(ChanceRéussite<=6)
     {
         m_Utilisateur->setCoeffAttaque(2);
         
         for(int i=0; i<m_Utilisateur->getListeBonus()->size();i++)
         {
-            //std::cout<<"wsh"<<std::endl;
+            //std::cout<<"wsh"<<std::endl; //test
             if(m_Utilisateur->getListeBonus()->at(i)->getNomEffet()==m_Nom)
             {
-                //std::cout<<"wsh2"<<std::endl;
+                //std::cout<<"wsh2"<<std::endl; //test
                 m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->push_back(1);
                 //std::cout<<m_Utilisateur->getListeBonus()->at(i)->getNombreTours()->at(0)<<std::endl; // test
             }
