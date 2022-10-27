@@ -3,3 +3,4 @@ main.dSYM
 .DS_Store
 .cmake-build-debug/
 .idea/
+.CMakeLists.txt
