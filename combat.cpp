@@ -9,7 +9,8 @@ Combat::Combat()
 
 Combat::~Combat()
 {
-
+    delete m_Joueur1;
+    delete m_Joueur2;
 }
 
 //================================= GETTERS ==============================================================

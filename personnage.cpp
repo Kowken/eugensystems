@@ -12,7 +12,7 @@ Personnage::Personnage(std::string Nom, int PVMax, int AttaqueBasique, int PVBou
 
 Personnage::~Personnage()
 {
-
+    delete m_Capacité;
 }
 
 //================================= GETTERS ==============================================================
